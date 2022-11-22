@@ -1,0 +1,50 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcConsoleClient";
+
+package contract;
+
+service Messaging {
+	rpc LoadFile (FileAbout) returns (stream PartialData);
+	rpc Speak (stream ClientMessage) returns (stream ServerMessage);
+}
+
+service Telemetry {
+	rpc RequestServerUsage (RequestOptions) returns (ServerUsage);
+	rpc ComputeClientUsageDelta (stream MemoryInfo) returns (MemoryMark);
+}
+
+message FileAbout {
+	string fileName = 1;
+}
+
+message PartialData {
+	bytes bucket = 1;
+}
+
+message ClientMessage {
+	string text = 1;
+}
+
+message ServerMessage {
+	string text = 1;
+}
+
+message RequestOptions {
+
+}
+
+message ServerUsage {
+	int64 virtualUsage = 1;
+	int64 physicalUsage = 2;
+}
+
+message MemoryInfo {
+	int64 virtualMemory = 1;
+	int64 physicalMemory = 2;
+}
+
+message MemoryMark {
+	int64 virtualMemoryDelta = 1;
+	int64 physicalMemoryDelta = 2;
+}
